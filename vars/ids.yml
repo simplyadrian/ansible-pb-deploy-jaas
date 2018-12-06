@@ -13,6 +13,7 @@ ecs_instance_type: "m3.2xlarge"
 ecs_log_group_name: "{{ org }}_jenkins_logs"
 ecs_log_pattern: ""
 subscription_filter_name: "{{ org }}_jenkins_logs"
+#cloudwatch_destination_arn: "arn:aws:logs:eu-west-1:602503371133:destination:CloudWatchElasticSearchDestinationEU"
 
 # Security groups
 sg_role_stack_name: "{{ ecs_stack_name }}-security-groups"

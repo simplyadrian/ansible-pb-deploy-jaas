@@ -21,3 +21,16 @@
     - role: ecs_task
     - role: ecs_service
     - role: alarms
+
+  #post_tasks:
+  #  - shell: aws --region "{{ region }}" logs describe-subscription-filters --log-group-name "{{ ecs_log_group_name }}"
+  #    register: log_subscription_filter_results
+
+  #  - debug: var=log_subscription_filter_results.stdout|from_json
+
+  #  - shell: aws --region "{{ region }}" logs put-subscription-filter \
+  #             --log-group-name "{{ ecs_log_group_name }}" \
+  #             --filter-name "{{ subscription_filter_name }}" \
+  #             --filter-pattern "{{ ecs_log_pattern }}" \
+  #             --destination-arn "{{ destination_arn }}"
+  #    when: (log_subscription_filter_results.stdout | from_json).subscriptionFilters|length == 0
