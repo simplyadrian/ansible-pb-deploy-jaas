@@ -2,7 +2,7 @@
   gather_facts: False
   vars:
   vars_files:
-    - "vars/{{ org }}.yml"
+    - "vars/{{ env }}-{{ org }}.yml"
 
   pre_tasks:
     - shell: aws --region "{{ region }}" logs describe-log-groups --log-group-name-prefix "{{ ecs_log_group_name }}"

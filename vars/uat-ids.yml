@@ -1,14 +1,14 @@
 security_token: "{{ lookup('env','AWS_SESSION_TOKEN') }}"
 sg_security_token: "{{ security_token }}"
-aws_account_number: "491692662146"
+aws_account_number: "730598725202"
 jenkins_image: "simplyadrian/jenkins-dood"
-s3_bucket: "idsgrp-dev-files-us"
+s3_bucket: "idsgrp-uat-files-us"
 product: "ps"
 region: "us-west-2"
-vpc_id: "vpc-0513a75ef692fbf80"
-vpc_ip_cidr: "172.22.0.0/20"
+vpc_id: "vpc-04777726cb313e567"
+vpc_ip_cidr: "172.23.0.0/20"
 vpn_ip_cidr: "10.0.0.0/8"
-vpc_public_subnets: "subnet-0ea2f7e2f64db6536,subnet-00a5c0dec86889b8e"
+vpc_public_subnets: "subnet-06c15a307a24f41aa,subnet-0c1ac8146cfc133f1"
 ecs_instance_type: "m3.2xlarge"
 ecs_log_group_name: "{{ org }}_jenkins_logs"
 ecs_log_pattern: ""
@@ -63,25 +63,25 @@ ecs_iam_role_policies:
           "Action":
             - "s3:Get*"
             - "s3:List*"
-          "Resource": "arn:aws:s3:::idsgrp-dev-files-us"
+          "Resource": "arn:aws:s3:::idsgrp-uat-files-us"
         - "Effect": "Allow"
           "Action":
             - "s3:Get*"
             - "s3:List*"
             - "s3:PutObject"
-          "Resource": "arn:aws:s3:::idsgrp-dev-files-us/*"
+          "Resource": "arn:aws:s3:::idsgrp-uat-files-us/*"
         - "Effect": "Allow"
           "Action":
             - "s3:Get*"
             - "s3:List*"
-          "Resource": "arn:aws:s3:::idsgrp-terraform-state"
+          "Resource": "arn:aws:s3:::idsgrp-terraform-state-uatus"
         - "Effect": "Allow"
           "Action":
             - "s3:Get*"
             - "s3:List*"
             - "s3:PutObject"
             - "s3:DeleteObject"
-          "Resource": "arn:aws:s3:::idsgrp-terraform-state/*"
+          "Resource": "arn:aws:s3:::idsgrp-terraform-state-uatus/*"
         - "Effect": "Allow"
           "Action":
             - "autoscaling:CreateAutoScalingGroup"
@@ -273,7 +273,7 @@ ecs_task_stack_name: "{{ ecs_stack_name }}-task"
 
 # Jenkins ELB
 elb_scheme: 'internet-facing'
-elb_acm_id: 'b542a74d-e611-46a2-b08e-1d941e95f1ce'
+elb_acm_id: 'c642f30c-1940-41fe-b288-ce00b0a4ab6f'
 elb_listeners:
   - protocol: https
     port: 443
@@ -291,20 +291,20 @@ elb_health_check_interval: 10
 elb_health_check_timeout: 9
 elb_health_check_target: "TCP:8080"
 elb_cross_zone: "true"
-elb_dns_name: "jenkins-{{org}}.idscloud.io"
-elb_zone_name: "idscloud.io"
+elb_dns_name: "jenkins-{{org}}.{{env}}.idscloud.io"
+elb_zone_name: "{{env}}.idscloud.io"
 elb_stack_name: "{{ ecs_stack_name }}-elb"
 
 ecs_container_port: 8080
 ecs_host_ami: "ami-00430184c7bb49914"
-ecs_host_keypair_name: "adrian5"
+ecs_host_keypair_name: "idscloud"
 ecs_tags:
     "Name" : "{{ org }}-jenkins-ecs"
     "ids:unit" : "devops"
     "ids:product" : "bdp"
     "ids:subproduct" : "jenkins"
     "ids:owner" : "aherrera@idsgrp.com"
-    "ids:env" : "dev"
+    "ids:env" : "uat"
 
 
 cloudwatch_stack_name: "{{ ecs_stack_name }}-alarms"
