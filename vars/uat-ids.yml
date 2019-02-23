@@ -273,7 +273,7 @@ ecs_task_stack_name: "{{ ecs_stack_name }}-task"
 
 # Jenkins ELB
 elb_scheme: 'internet-facing'
-elb_acm_id: 'c642f30c-1940-41fe-b288-ce00b0a4ab6f'
+elb_acm_id: 'c02112dd-019b-491d-ade7-4109817131a0'
 elb_listeners:
   - protocol: https
     port: 443
