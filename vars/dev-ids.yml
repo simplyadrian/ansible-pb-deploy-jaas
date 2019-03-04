@@ -296,7 +296,7 @@ elb_zone_name: "dev.idscloud.io"
 elb_stack_name: "{{ ecs_stack_name }}-elb"
 
 ecs_container_port: 8080
-ecs_host_ami: "ami-00430184c7bb49914"
+ecs_host_ami: "ami-0c4b05c0409735671"
 ecs_host_keypair_name: "idscloud"
 ecs_tags:
     "Name" : "{{ org }}-jenkins-ecs"
