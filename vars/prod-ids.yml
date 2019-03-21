@@ -1,14 +1,14 @@
 security_token: "{{ lookup('env','AWS_SESSION_TOKEN') }}"
 sg_security_token: "{{ security_token }}"
-aws_account_number: "491692662146"
+aws_account_number: "777875878886"
 jenkins_image: "simplyadrian/jenkins-dood"
-s3_bucket: "idsgrp-dev-config-us"
+s3_bucket: "idsgrp-prod-config-us"
 product: "ps"
 region: "us-west-2"
-vpc_id: "vpc-0513a75ef692fbf80"
-vpc_ip_cidr: "172.22.0.0/20"
+vpc_id: "vpc-09932e372fd56a0f1"
+vpc_ip_cidr: "172.24.0.0/16"
 vpn_ip_cidr: "10.0.0.0/8"
-vpc_public_subnets: "subnet-0ea2f7e2f64db6536,subnet-00a5c0dec86889b8e"
+vpc_public_subnets: "subnet-00855eb174d16835c,subnet-08983619c3a02bc4d,subnet-01655d2c37db019ee"
 ecs_instance_type: "m3.2xlarge"
 ecs_log_group_name: "{{ org }}_jenkins_logs"
 ecs_log_pattern: ""
@@ -48,7 +48,7 @@ ecs_stack_name: "{{ org }}-{{ region }}-jenkins-ecs-cluster"
 ecs_sg_ids: "{{ sg_stack_output['BackendSecurityGroupId'] }},{{ elb_cf_output.stack_outputs.TargetSecurityGroupId }}"
 ecs_subnets: "{{ vpc_public_subnets }}"
 ecs_credstash_table_arn: "arn:aws:dynamodb:{{ region }}:{{ aws_account_number }}:table/credential-store"
-ecs_credstash_kms_key_arn: "arn:aws:kms:{{ region }}:{{ aws_account_number }}:key/2d8e3764-c76d-4016-b2d4-2369e546e743"
+ecs_credstash_kms_key_arn: "arn:aws:kms:{{ region }}:{{ aws_account_number }}:key/1c95415d-fbfb-4db5-afce-8bee86370726"
 ecs_stack_description: "ECS Cluster for Jenkins"
 
 # ECS IAM
@@ -63,25 +63,25 @@ ecs_iam_role_policies:
           "Action":
             - "s3:Get*"
             - "s3:List*"
-          "Resource": "arn:aws:s3:::idsgrp-dev-config-us"
+          "Resource": "arn:aws:s3:::idsgrp-prod-config-us"
         - "Effect": "Allow"
           "Action":
             - "s3:Get*"
             - "s3:List*"
             - "s3:PutObject"
-          "Resource": "arn:aws:s3:::idsgrp-dev-config-us/*"
+          "Resource": "arn:aws:s3:::idsgrp-prod-config-us/*"
         - "Effect": "Allow"
           "Action":
             - "s3:Get*"
             - "s3:List*"
-          "Resource": "arn:aws:s3:::idsgrp-dev-terraform-state"
+          "Resource": "arn:aws:s3:::idsgrp-prod-terraform-state"
         - "Effect": "Allow"
           "Action":
             - "s3:Get*"
             - "s3:List*"
             - "s3:PutObject"
             - "s3:DeleteObject"
-          "Resource": "arn:aws:s3:::idsgrp-dev-terraform-state/*"
+          "Resource": "arn:aws:s3:::idsgrp-prod-terraform-state/*"
         - "Effect": "Allow"
           "Action":
             - "autoscaling:CreateAutoScalingGroup"
@@ -273,7 +273,7 @@ ecs_task_stack_name: "{{ ecs_stack_name }}-task"
 
 # Jenkins ELB
 elb_scheme: 'internet-facing'
-elb_acm_id: '91ff3ce3-f922-4b17-a998-b817ed0d8d6b'
+elb_acm_id: 'f5b01cf9-efee-4c10-8578-3bf42d4e0be7'
 elb_listeners:
   - protocol: https
     port: 443
@@ -292,7 +292,7 @@ elb_health_check_timeout: 9
 elb_health_check_target: "TCP:8080"
 elb_cross_zone: "true"
 elb_dns_name: "jenkins-{{org}}.{{env}}.idscloud.io"
-elb_zone_name: "dev.idscloud.io"
+elb_zone_name: "{{env}}.idscloud.io"
 elb_stack_name: "{{ ecs_stack_name }}-elb"
 
 ecs_container_port: 8080
@@ -304,7 +304,7 @@ ecs_tags:
     "ids:product" : "bdp"
     "ids:subproduct" : "jenkins"
     "ids:owner" : "aherrera@idsgrp.com"
-    "ids:env" : "dev"
+    "ids:env" : "prod"
 
 
 cloudwatch_stack_name: "{{ ecs_stack_name }}-alarms"
